@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .character {
+      transform: translate3d(0, 0, 0) scaleX(-1);
+      background-color: black;
+      height: 119px;
+      background: url('125120.png') no-repeat;
+      position: relative;
+      transition: left 100ms ease;
+      width: 52px;
+      background-position: -28px -150px;
+    }
+
+    .character--001 {
+      width: 84px;
+      background-position: -16px -13px;
+    }
+
+    .character--002 {
+      width: 84px;
+      background-position: -109px -13px;
+    }
+
+    .character--003 {
+      width: 80px;
+      background-position: -201px -13px;
+    }
+
+    .character--004 {
+      width: 62px;
+      background-position: -290px -13px;
+    }
+
+    .character--005 {
+      width: 48px;
+      background-position: -366px -13px;
+    }
+
+    .character--006 {
+      width: 76px;
+      background-position: -422px -13px;
+    }
+
+    .character--007 {
+      width: 76px;
+      background-position: -515px -13px;
+    }
+
+    .character--008 {
+      width: 62px;
+      background-position: -605px -13px;
+    }
+
+    .character--009 {
+      width: 52px;
+      background-position: -683px -13px;
+    }
+
+    .character--010 {
+      width: 67px;
+      background-position: -743px -13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="character character--001"></div>
+  </div>
+</body>
+<script>
+  const element = document.querySelector('.character');
+  let count = 1;
+  let left = 0;
+  let vel = 0;
+  const clam = 10;
+  let direction = "right";
+
+  let interval;
+
+  const slowDown = () => {
+    let fmt = "00";
+    let count = 1;
+    while(vel >= 1) {
+      direction === "right" ? left += vel / (count * 2) : left -= vel / (count * 2);
+      const facing = direction === "right" ? "scaleX(-1)" : "scaleX(1)"; 
+      console.log(left);
+      element.style = `transform: translate3d(0, 0, 0) ${facing}; left: ${left}px;`;
+      vel--;
+      count++;
+    }
+    vel = 0;
+    element.className = "character";
+  } 
+
+  document.addEventListener('keyup', (event) => {
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+      slowDown();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+      vel++;
+      if (vel > 1) {
+        if (event.key === "ArrowRight") {
+          direction = "right";
+          element.style.left -= 1;
+          if (vel > clam) {
+            vel = clam;
+          }
+          left += vel;
+          element.style = `transform: translate3d(0, 0, 0) scaleX(-1); left: ${left}px;`;
+        } else if (event.key === "ArrowLeft") {
+          direction = "left";
+          if (vel > clam) {
+            vel = clam;
+          }
+          left -= vel;
+          element.style.left += 1;
+          element.style = `transform: translate3d(0, 0, 0) scaleX(1); left: ${left}px;`;
+        }
+        let fmt = "00";
+
+        if (count < 10) {
+          count++;
+          if (count === 10) {
+            fmt = "0";
+          }
+        } else {
+          count = 1;
+        }
+
+        element.className = `character character--${fmt}${count}`
+      }
+    }
+  });
+</script>
+
+</html>
